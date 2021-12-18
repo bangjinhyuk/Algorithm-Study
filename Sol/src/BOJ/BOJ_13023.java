@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -12,33 +11,44 @@ import java.util.StringTokenizer;
  * Created by bangjinhyuk on 2021/12/09.
  */
 public class BOJ_13023 {
+    static ArrayList<Integer>[] list;
+    static int n;
+    static boolean [] visited;
     public static void main(String[] args) throws IOException {
         var br = new BufferedReader(new InputStreamReader(System.in));
         var st = new StringTokenizer(br.readLine()," ");
-        var n = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
         var m = Integer.parseInt(st.nextToken());
-        List<Friends> friendsList = new ArrayList<>();
-        while(m-->0){
+        list = new ArrayList[n];
+        for (int i=0; i<n; i++) {
+            list[i] = new ArrayList<Integer>();
+        }
+        for(int i = 0; i < m; i++){
             st = new StringTokenizer(br.readLine()," ");
-            friendsList.add(new Friends(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            list[x].add(y);
+            list[y].add(x);
         }
-        Collections.sort(friendsList);
-
-
-
+        for(int i = 0; i < n;i++){
+            visited = new boolean[n];
+            if(dfs(i,1)){
+                System.out.println(1);
+                return;
+            }
+        }
+        System.out.println(0);
     }
-    static class Friends implements Comparable<Friends>{
-        int a;
-        int b;
 
-        public Friends(int a, int b) {
-            this.a = a;
-            this.b = b;
+    private static boolean dfs(int idx,int visitNum) {
+        if(visitNum == 5) return true;
+        visited[idx] = true;
+        for(int i: list[idx]){
+            if(!visited[i]){
+                if(dfs(i,visitNum+1)) return true;
+            }
         }
-
-        @Override
-        public int compareTo(Friends o) {
-            return this.a - o.a;
-        }
+        visited[idx] = false;
+        return false;
     }
 }
