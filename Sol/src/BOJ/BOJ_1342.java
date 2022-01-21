@@ -45,8 +45,7 @@ public class BOJ_1342 {
             return;
         }
         //map 복제
-        Map<Character, Integer> tmpCharacters = new HashMap<>();
-        tmpCharacters.putAll(characters);
+        Map<Character, Integer> tmpCharacters = new HashMap<>(characters);
         // select 넘어온것 복제한 map에서 삭제
         if(tmpCharacters.get(select) == 1)
             tmpCharacters.remove(select);
